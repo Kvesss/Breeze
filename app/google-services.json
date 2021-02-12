@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "919197993465",
+    "project_id": "breeze-1de05",
+    "storage_bucket": "breeze-1de05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919197993465:android:ce7ffe3c8f791af9109528",
+        "android_client_info": {
+          "package_name": "com.example.breeze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919197993465-t96v0tcnsu8c2aa1ld6lm3gs5j6ovdrb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuwM4f8yfy5BAi9n62ocsaUYumolm8eUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919197993465-t96v0tcnsu8c2aa1ld6lm3gs5j6ovdrb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
