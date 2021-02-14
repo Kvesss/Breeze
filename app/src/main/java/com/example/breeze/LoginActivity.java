@@ -26,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
     private TextView tvRegister;
-    private FirebaseUser user;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
 
@@ -37,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
         initializeViews();
         setupOnClickListeners();
     }
@@ -95,19 +93,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
-        if(user != null){
-            sendToMainActivity();
-        }
-    }
-
-    public void sendToMainActivity() {
+    private void sendToMainActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-
+        finish();
     }
 
 

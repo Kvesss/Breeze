@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    SlidePagerAdapter slidePagerAdapter;
+    private SlidePagerAdapter slidePagerAdapter;
     private FirebaseAuth mAuth;
-    FirebaseUser user;
+    private FirebaseUser user;
 
 
     @Override
@@ -58,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         if(user == null){
-            SendToLoginActivity();
+            sendToLoginActivity();
         }
     }
 
-    private void SendToLoginActivity() {
+    private void sendToLoginActivity() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
     }
@@ -77,6 +78,32 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         //TODO
-        return super.onOptionsItemSelected(item);
+        super.onOptionsItemSelected(item);
+
+        if(item.getItemId() == R.id.itemProfile){
+            sendToProfileActivity();
+        }
+        if(item.getItemId() == R.id.itemSettings){
+            sendToSettingsActivity();
+        }
+        if(item.getItemId() == R.id.langMenu){
+        }
+        if(item.getItemId() == R.id.itemLogout){
+            mAuth.signOut();
+            sendToLoginActivity();
+            Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+        }
+
+        return true;
+    }
+
+    private void sendToProfileActivity() {
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void sendToSettingsActivity() {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
     }
 }

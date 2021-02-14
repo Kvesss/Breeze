@@ -3,6 +3,18 @@
 
 
     <item
+        android:id="@+id/itemProfile"
+        android:title="@string/profile">
+
+    </item>
+
+    <item
+        android:id="@+id/itemSettings"
+        android:title="@string/settings">
+
+    </item>
+
+    <item
         android:id="@+id/langMenu"
         android:title="@string/language">
         <menu>
@@ -13,5 +25,11 @@
                 android:id="@+id/cro"
                 android:title="@string/croatian"/>
         </menu>
+    </item>
+
+    <item
+        android:id="@+id/itemLogout"
+        android:title="@string/logout">
+
     </item>
 </menu>

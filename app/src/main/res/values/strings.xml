@@ -26,4 +26,7 @@
     <string name="dialogPleaseWait">Please wait...</string>
     <string name="dialogTitleCreatingAcc">Creating an account...</string>
     <string name="dialogSigningIn">Signing in</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+    <string name="profile">Profile</string>
 </resources>
