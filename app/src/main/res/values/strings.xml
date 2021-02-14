@@ -14,4 +14,16 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string name="welcome_to_breeze">Welcome to Breeze</string>
+    <string name="hintPassword">Password…</string>
+    <string name="hintEmail_adress">Email adress…</string>
+    <string name="btnLogin">LOGIN</string>
+    <string name="don_t_have_an_account_join_us">Don\'t have an account? Join us!</string>
+    <string name="tvOrLoginWith">Or Login with</string>
+    <string name="btnPhone">PHONE</string>
+    <string name="btnRegister">REGISTER</string>
+    <string name="already_have_an_account">I already have an account</string>
+    <string name="dialogPleaseWait">Please wait...</string>
+    <string name="dialogTitleCreatingAcc">Creating an account...</string>
+    <string name="dialogSigningIn">Signing in</string>
 </resources>
