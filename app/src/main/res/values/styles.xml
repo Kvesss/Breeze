@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AlertDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:textColor">@color/Maroon</item>
+        <item name="android:strokeColor">@color/Maroon</item>
+        <item name="android:strokeWidth">2</item>
+        <item name="android:radius">5dp</item>
+    </style>
+
+</resources>

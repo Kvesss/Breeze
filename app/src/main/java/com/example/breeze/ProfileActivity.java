@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -70,6 +72,24 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
+
+//        TODO
+//        databaseReference.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if(snapshot.child("image").exists()){
+//                    profileImage.set((snapshot.child("name").getValue().toString()));
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+
     }
 
 
@@ -124,11 +144,52 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //TODO
+        super.onOptionsItemSelected(item);
+
+        if(item.getItemId() == R.id.itemProfile){
+
+        }
+        if(item.getItemId() == R.id.itemSettings){
+            sendToSettingsActivity();
+        }
+        if(item.getItemId() == R.id.langMenu){
+        }
+        if(item.getItemId() == R.id.itemLogout){
+            mAuth.signOut();
+            sendToLoginActivity();
+            Toast.makeText(ProfileActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+        }
+
+        return true;
+    }
+
     private void sendToMainActivity() {
         Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+
+    private void sendToSettingsActivity() {
+        Intent intent = new Intent(ProfileActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void sendToLoginActivity() {
+        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
-
 }

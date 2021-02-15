@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvRegister;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
 
@@ -38,6 +39,12 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         initializeViews();
         setupOnClickListeners();
+        if (user != null) {
+            // User is signed in
+            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        }
     }
 
     private void setupOnClickListeners() {

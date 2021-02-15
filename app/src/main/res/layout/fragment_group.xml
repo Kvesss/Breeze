@@ -5,10 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".GroupFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView
+        android:id="@+id/groupsListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="groups" />
+        android:layout_height="match_parent"/>
+
+    <ImageButton
+        android:id="@+id/ibtnCreateGroup"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/addgroup"
+        android:clickable="true"
+        android:focusable="true" />
 
 </RelativeLayout>

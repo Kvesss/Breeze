@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         initializeViews();
         setupFragments();
         displayRegistrationAlerter();
+
     }
 
     public void initializeViews(){
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child("name").exists()){
-                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     sendToProfileActivity();
