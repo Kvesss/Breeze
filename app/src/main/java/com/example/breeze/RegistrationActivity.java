@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.tapadoo.alerter.Alerter;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -67,10 +69,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     String userID = mAuth.getCurrentUser().getUid();
                     databaseReference.child("Users").child(userID).setValue("");
-
                     sendToMainActivity();
                     Toast.makeText(RegistrationActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
+                    displayRegistrationAlerter();
+
                 }
                 else {
                     Toast.makeText(RegistrationActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -79,6 +82,12 @@ public class RegistrationActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void displayRegistrationAlerter(){
+        Alerter.create(this).setTitle("Welcome!").setText("You have successfully registered to Breeze!")
+                .setDuration(3000).setBackgroundResource(R.drawable.border).enableSwipeToDismiss().setIcon(R.drawable.breezelogo)
+                .setEnterAnimation(R.anim.alerter_slide_in_from_bottom).setExitAnimation(R.anim.alerter_slide_out_to_top).show();
     }
 
 

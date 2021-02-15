@@ -14,6 +14,12 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.tapadoo.alerter.Alerter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private SlidePagerAdapter slidePagerAdapter;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
+    private DatabaseReference databaseReference;
 
 
     @Override
@@ -34,8 +41,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         initializeViews();
         setupFragments();
+        displayRegistrationAlerter();
     }
 
     public void initializeViews(){
@@ -54,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(this.viewPager);
     }
 
+    private void displayRegistrationAlerter(){
+        Alerter.create(this).setTitle("Welcome!").setText("Chat with your bros on Breeze!")
+                .setDuration(3000).setBackgroundResource(R.drawable.border).enableSwipeToDismiss().setIcon(R.drawable.breezelogo)
+                .setEnterAnimation(R.anim.alerter_slide_in_from_bottom).setExitAnimation(R.anim.alerter_slide_out_to_top).show();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -61,12 +76,32 @@ public class MainActivity extends AppCompatActivity {
         if(user == null){
             sendToLoginActivity();
         }
+        else {
+            verifyUserExistence();
+        }
     }
 
-    private void sendToLoginActivity() {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
+    private void verifyUserExistence() {
+        String userID = mAuth.getCurrentUser().getUid();
+        databaseReference.child("Users").child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child("name").exists()){
+                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    sendToProfileActivity();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,11 +134,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendToProfileActivity() {
         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void sendToSettingsActivity() {
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(intent);
     }
+
+    private void sendToLoginActivity() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
 }

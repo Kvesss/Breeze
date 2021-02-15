@@ -29,12 +29,14 @@
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:layout_below="@+id/welcomeToBreeze"
         android:layout_marginTop="30dp"
         android:layout_marginHorizontal="20dp"
         android:hint="@string/hintEmail_adress"
         android:textColorHint="@color/Maroon"
-        android:backgroundTint="@color/Maroon"
+        android:background="@drawable/border"
+
         />
 
     <EditText
@@ -42,12 +44,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etEmail"
+        android:padding="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginHorizontal="20dp"
         android:hint="@string/hintPassword"
         android:inputType="textPassword"
         android:textColorHint="@color/Maroon"
-        android:backgroundTint="@color/Maroon"
+        android:background="@drawable/border"
         />
 
     <Button
@@ -58,6 +61,7 @@
         android:layout_below="@+id/etPassword"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="100dp"
+        android:background="@drawable/border"
         />
 
     <TextView
@@ -89,6 +93,7 @@
         android:layout_below="@+id/tvOrLoginWith"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="100dp"
+        android:background="@drawable/border"
         />
 
 </RelativeLayout>

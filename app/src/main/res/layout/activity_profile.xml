@@ -18,6 +18,7 @@
         app:civ_border_color="@color/Maroon"/>
 
     <TextView
+        android:id="@+id/tvProfileName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_image"
@@ -26,6 +27,8 @@
         android:layout_marginTop="20dp"
         android:fontFamily="cursive"
         android:textSize="30sp"
-        android:textColor="@color/Maroon"/>
+        android:textColor="@color/Maroon"
+        android:clickable="true"
+        android:focusable="true"/>
 
 </RelativeLayout>

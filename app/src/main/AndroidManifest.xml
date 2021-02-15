@@ -11,7 +11,8 @@
         android:roundIcon="@drawable/breezelogo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Breeze">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".PreferenceActivity"></activity>
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity">
