@@ -6,10 +6,11 @@
     tools:context=".GroupFragment">
 
 
-    <ListView
-        android:id="@+id/groupsListView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/groupsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background"/>
 
     <ImageButton
         android:id="@+id/ibtnCreateGroup"

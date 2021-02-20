@@ -11,10 +11,11 @@
         android:roundIcon="@drawable/breezelogo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Breeze">
+        <activity android:name=".GroupChatActivity"></activity>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 
@@ -35,12 +38,14 @@ public class GroupFragment extends Fragment {
 
 
     private View groupView;
-    private ListView listView;
-    private ArrayAdapter<String> arrayAdapter;
-    private ArrayList<String> groupsList = new ArrayList<>();
+    private RecyclerView groupsRecyclerView;
+    private List<Group> groupList = new ArrayList<>();
+    private GroupsAdapter groupsAdapter;
+    private ImageButton createGroup;
+
     DatabaseReference databaseReference;
 
-    private ImageButton createGroup;
+
 
     public static GroupFragment newInstance() {
         return new GroupFragment();
@@ -51,13 +56,10 @@ public class GroupFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         groupView = inflater.inflate(R.layout.fragment_group, container, false);
-        createGroup = (ImageButton) groupView.findViewById(R.id.ibtnCreateGroup);
-        createGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createNewGroup();
-                Toast.makeText(getContext(), "Create Group", Toast.LENGTH_SHORT).show();
-            }
+        createGroup = groupView.findViewById(R.id.ibtnCreateGroup);
+        createGroup.setOnClickListener(v -> {
+            createNewGroup();
+            Toast.makeText(getContext(), "Create Group", Toast.LENGTH_SHORT).show();
         });
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Groups");
@@ -72,15 +74,16 @@ public class GroupFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Set<String> set = new HashSet<>();
+                Set<Group> set = new HashSet<>();
                 Iterator iterator = snapshot.getChildren().iterator();
                 while (iterator.hasNext()){
-                    set.add(((DataSnapshot)iterator.next()).getKey());
+                    set.add(new Group(((DataSnapshot)iterator.next()).getKey()));
                 }
 
-                groupsList.clear();
-                groupsList.addAll(set);
-                arrayAdapter.notifyDataSetChanged();
+
+                groupList.clear();
+                groupList.addAll(set);
+                groupsAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -91,9 +94,11 @@ public class GroupFragment extends Fragment {
     }
 
     private void initializeViews() {
-        listView = groupView.findViewById(R.id.groupsListView);
-        arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, groupsList);
-        listView.setAdapter(arrayAdapter);
+        groupsRecyclerView = groupView.findViewById(R.id.groupsRecyclerView);
+        groupsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
+        groupsAdapter = new GroupsAdapter(groupList, getContext());
+        groupsRecyclerView.setAdapter(groupsAdapter);
+
 
 
     }
@@ -135,12 +140,9 @@ public class GroupFragment extends Fragment {
     }
 
     private void instantiateGroup(String groupName) {
-        databaseReference.child(groupName).setValue("").addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(getContext(), "You have successfully created "+ groupName, Toast.LENGTH_SHORT).show();
-                }
+        databaseReference.child(groupName).setValue("").addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                Toast.makeText(getContext(), "You have successfully created "+ groupName, Toast.LENGTH_SHORT).show();
             }
         });
     }
