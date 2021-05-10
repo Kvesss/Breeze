@@ -1,11 +1,14 @@
 package com.example.breeze;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +26,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.canhub.cropper.CropImage;
+import com.canhub.cropper.CropImageView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
 
 import java.util.HashMap;
 
@@ -34,6 +45,9 @@ public class ProfileActivity extends AppCompatActivity {
     private String userID;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
+    private static final int pick = 1;
+    private StorageReference profileImageRef;
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -43,6 +57,8 @@ public class ProfileActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        profileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
+        progressDialog = new ProgressDialog(this);
         initializeViews();
         setOnClickListeners();
     }
@@ -52,6 +68,16 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 enterName();
+            }
+        });
+        
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, pick);
             }
         });
     }
@@ -65,6 +91,10 @@ public class ProfileActivity extends AppCompatActivity {
                 if(snapshot.child("name").exists()){
                     profileName.setText((snapshot.child("name").getValue().toString()));
                 }
+                if(snapshot.child("image").exists()){
+                    Picasso.get().load(snapshot.child("image").getValue().toString()).into(profileImage);
+
+                }
             }
 
             @Override
@@ -73,21 +103,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-
-//        TODO
-//        databaseReference.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.child("image").exists()){
-//                    profileImage.set((snapshot.child("name").getValue().toString()));
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
 
     }
@@ -173,6 +188,76 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == pick && resultCode == RESULT_OK && data != null){
+            Uri imgUri = data.getData();
+
+            CropImage.activity(imgUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1,1)
+                    .start(this);
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if(resultCode == RESULT_OK){
+                Uri uri = result.getUri();
+
+                progressDialog.setTitle("Updating Profile Image");
+                progressDialog.setMessage("Please Wait...");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+
+                StorageReference path = profileImageRef.child(userID);
+
+                path.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(ProfileActivity.this, "Image Updated Successfully", Toast.LENGTH_SHORT).show();
+
+
+
+                            Task<Uri> result = task.getResult().getStorage().getDownloadUrl();
+                            result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String imgURL = uri.toString();
+                                    Picasso.get().load(imgURL).into(profileImage);
+                                    databaseReference.child("Users").child(userID).child("image").setValue(imgURL).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                progressDialog.dismiss();
+                                                Toast.makeText(ProfileActivity.this, "Image saved in database", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(ProfileActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+
+
+                        }else{
+                            progressDialog.dismiss();
+                            Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+
+        }
+
     }
 
     private void sendToMainActivity() {

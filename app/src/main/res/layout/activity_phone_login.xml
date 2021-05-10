@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/LightGrey"
+    tools:context=".PhoneLoginActivity">
+
+    <ImageView
+        android:id="@+id/breezelogo"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/breezelogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/etPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_below="@+id/breezelogo"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp"
+        android:hint="@string/your_phone_number"
+        android:textColorHint="@color/Maroon"
+        android:background="@drawable/border"
+        />
+
+    <EditText
+        android:id="@+id/etSendVerificationCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_below="@+id/etPhoneNumber"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp"
+        android:hint="@string/verification_code"
+        android:textColorHint="@color/Maroon"
+        android:background="@drawable/border"
+        />
+
+    <Button
+        android:id="@+id/btnSendVerificationCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/send_verification_code"
+        android:layout_below="@+id/etSendVerificationCode"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="100dp"
+        android:background="@drawable/border"
+        />
+
+    <Button
+        android:id="@+id/btnVerify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/verify"
+        android:layout_below="@+id/btnSendVerificationCode"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="100dp"
+        android:background="@drawable/border"
+        />
+
+</RelativeLayout>

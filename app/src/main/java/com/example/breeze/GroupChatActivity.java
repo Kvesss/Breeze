@@ -64,6 +64,13 @@ public class GroupChatActivity extends AppCompatActivity {
         this.groupName = getIntent().getExtras().getString("groupname");
         this.setTitle(groupName);
 
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
+
         sendButton.setOnClickListener(v -> {
             saveMessageToDatabase();
             etMessage.setText("");
@@ -121,10 +128,10 @@ public class GroupChatActivity extends AppCompatActivity {
         while (iterator.hasNext()){
             String chatDate = (String)((DataSnapshot)iterator.next()).getValue();
             String chatMessage = (String)((DataSnapshot)iterator.next()).getValue();
-            String chateName = (String)((DataSnapshot)iterator.next()).getValue();
+            String chatName = (String)((DataSnapshot)iterator.next()).getValue();
             String chatTime = (String)((DataSnapshot)iterator.next()).getValue();
 
-            textMessage.append(chateName + "\n" + chatMessage + " \n\n\n");
+            textMessage.append(chatName + "\n" + chatMessage + " \n\n\n");
 
             scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }

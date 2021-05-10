@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     public void initializeViews(){
         this.tabLayout = findViewById(R.id.tabLayout);
         this.viewPager = findViewById(R.id.viewPager);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
     }
 
     public void setupFragments(){

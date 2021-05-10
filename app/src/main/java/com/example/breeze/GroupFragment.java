@@ -42,8 +42,7 @@ public class GroupFragment extends Fragment {
     private List<Group> groupList = new ArrayList<>();
     private GroupsAdapter groupsAdapter;
     private ImageButton createGroup;
-
-    DatabaseReference databaseReference;
+    private DatabaseReference databaseReference;
 
 
 
