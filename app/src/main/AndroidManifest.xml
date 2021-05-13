@@ -13,7 +13,8 @@
         android:roundIcon="@drawable/breezelogo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Breeze">
-        <activity android:name=".SearchUsersActivity"></activity>
+        <activity android:name=".UserActivity"></activity>
+        <activity android:name=".SearchUsersActivity" />
         <activity android:name=".PhoneLoginActivity" />
         <activity android:name=".GroupChatActivity" />
         <activity android:name=".ProfileActivity" />

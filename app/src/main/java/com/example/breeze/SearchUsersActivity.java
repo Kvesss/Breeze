@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.auth.User;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -47,7 +49,17 @@ public class SearchUsersActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull SearchUsersViewHolder searchUsersViewHolder, int i, @NonNull Contact contact) {
 
                 searchUsersViewHolder.name.setText(contact.getName());
-                Picasso.get().load(contact.getImage()).placeholder(R.drawable.profile_icon).into(searchUsersViewHolder.profileImage);
+                Picasso.get().load(contact.getImage()).placeholder(R.drawable.profile_picture).into(searchUsersViewHolder.profileImage);
+
+                searchUsersViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String clickedUserID = getRef(i).getKey();
+                        Intent intent = new Intent(SearchUsersActivity.this, UserActivity.class);
+                        intent.putExtra("clickedUserID", clickedUserID);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @NonNull
@@ -71,5 +83,6 @@ public class SearchUsersActivity extends AppCompatActivity {
             this.name = itemView.findViewById(R.id.tvUserName);
             this.profileImage = itemView.findViewById(R.id.ivUserProfile);
         }
+
     }
 }
