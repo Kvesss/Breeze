@@ -38,7 +38,7 @@
         android:layout_margin="100dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:text="Start Chat"
+        android:text="Send Friend Request"
         android:textAllCaps="false"
         />
 </RelativeLayout>
