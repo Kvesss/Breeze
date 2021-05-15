@@ -95,6 +95,9 @@ public class ProfileActivity extends AppCompatActivity {
                     Picasso.get().load(snapshot.child("image").getValue().toString()).into(profileImage);
 
                 }
+                else {
+                    Toast.makeText(ProfileActivity.this, "Please set your profile picture", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -103,13 +106,10 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
 
     private void enterName(){
-        String name;
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -158,8 +158,6 @@ public class ProfileActivity extends AppCompatActivity {
             });
         }
     }
-
-
 
 
     @Override
@@ -247,7 +245,6 @@ public class ProfileActivity extends AppCompatActivity {
                                 }
                             });
 
-
                         }else{
                             progressDialog.dismiss();
                             Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -255,7 +252,6 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
             }
-
         }
 
     }

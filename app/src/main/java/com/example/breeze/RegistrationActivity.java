@@ -40,8 +40,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void setupOnClickListeners() {
         tvHaveAnAcc.setOnClickListener(v -> {
-            Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-            startActivity(intent);
+            sendToLoginActivity();
         });
 
         btnRegister.setOnClickListener(v -> createAccount());

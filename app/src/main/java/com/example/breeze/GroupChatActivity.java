@@ -3,6 +3,8 @@ package com.example.breeze;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,9 +29,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class GroupChatActivity extends AppCompatActivity {
 
@@ -37,7 +43,6 @@ public class GroupChatActivity extends AppCompatActivity {
     private ImageButton sendButton;
     private EditText etMessage;
     private ScrollView scrollView;
-    private TextView textMessage;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference userReference;
@@ -48,7 +53,11 @@ public class GroupChatActivity extends AppCompatActivity {
     private String currentDate;
     private String currentTime;
     private String groupName;
+    private String imgURL;
 
+    private RecyclerView recyclerView;
+    private MessageListAdapter messageListAdapter;
+    private List<Message> messageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +69,14 @@ public class GroupChatActivity extends AppCompatActivity {
         this.scrollView = findViewById(R.id.groupChatScrollView);
         this.etMessage = findViewById(R.id.etSendMessage);
         this.sendButton = findViewById(R.id.ibtnSendMessage);
-        this.textMessage = findViewById(R.id.tvGroupMessage);
         this.groupName = getIntent().getExtras().getString("groupname");
         this.setTitle(groupName);
+
+        recyclerView = findViewById(R.id.groupMessagesRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        messageListAdapter = new MessageListAdapter(this, messageList);
+        recyclerView.setAdapter(messageListAdapter);
+
 
         scrollView.post(new Runnable() {
             @Override
@@ -125,17 +139,23 @@ public class GroupChatActivity extends AppCompatActivity {
 
     private void displayMessages(DataSnapshot snapshot) {
         Iterator iterator = snapshot.getChildren().iterator();
-        while (iterator.hasNext()){
-            String chatDate = (String)((DataSnapshot)iterator.next()).getValue();
-            String chatMessage = (String)((DataSnapshot)iterator.next()).getValue();
-            String chatName = (String)((DataSnapshot)iterator.next()).getValue();
-            String chatTime = (String)((DataSnapshot)iterator.next()).getValue();
-
-            textMessage.append(chatName + "\n" + chatMessage + " \n\n\n");
-
-            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+        Set<Message> set = new HashSet<>();
+        while (iterator.hasNext()) {
+            String chatDate = (String) ((DataSnapshot) iterator.next()).getValue();
+            String chatMessage = (String) ((DataSnapshot) iterator.next()).getValue();
+            String chatName = (String) ((DataSnapshot) iterator.next()).getValue();
+            String chatImage = (String) ((DataSnapshot) iterator.next()).getValue();
+            String chatTime = (String) ((DataSnapshot) iterator.next()).getValue();
+            String chatID = (String) ((DataSnapshot) iterator.next()).getValue();
+            set.add(new Message(chatDate, chatMessage, chatName, chatImage, chatTime, chatID));
         }
-    }
+
+//        messageList.clear();
+        messageList.addAll(set);
+        messageListAdapter.notifyDataSetChanged();
+
+        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+        }
 
     private void saveMessageToDatabase() {
         String message = etMessage.getText().toString();
@@ -152,6 +172,7 @@ public class GroupChatActivity extends AppCompatActivity {
             SimpleDateFormat currentTimeFormat = new SimpleDateFormat("hh:mm");
             currentTime = currentTimeFormat.format(calendar.getTime());
 
+
             HashMap<String, Object> groupMessageKey = new HashMap<>();
             groupnameReference.updateChildren(groupMessageKey);
             groupMessageKeyReference = groupnameReference.child(messageKey);
@@ -161,6 +182,8 @@ public class GroupChatActivity extends AppCompatActivity {
             messageInfoMap.put("message", message);
             messageInfoMap.put("date", currentDate);
             messageInfoMap.put("time", currentTime);
+            messageInfoMap.put("profileImage", imgURL);
+            messageInfoMap.put("userID", userID);
             groupMessageKeyReference.updateChildren(messageInfoMap);
 
 
@@ -173,6 +196,7 @@ public class GroupChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
                         username = snapshot.child("name").getValue().toString();
+                        imgURL = snapshot.child("image").getValue().toString();
                     }
             }
 

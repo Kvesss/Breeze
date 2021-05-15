@@ -13,23 +13,12 @@
         android:layout_above="@+id/messageLayout"
         >
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/groupMessagesRecyclerView"
+            app:stackFromEnd="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent"/>
 
-            <TextView
-                android:id="@+id/tvGroupMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:padding="10dp"
-                android:textSize="18sp"
-                android:background="@color/DarkRed"
-                android:textColor="@color/white"
-                />
-
-        </LinearLayout>
 
     </ScrollView>
 
