@@ -11,6 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.breeze.Adapters.SlidePagerAdapter;
+import com.example.breeze.MainFragments.ChatsFragment;
+import com.example.breeze.MainFragments.ContactFragment;
+import com.example.breeze.MainFragments.GroupFragment;
+import com.example.breeze.Utils.DepthPageTransformer;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -95,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     sendToProfileActivity();
                 }
+                if(!snapshot.child("image").exists()){
+                    sendToProfileActivity();
+                }
+
             }
 
             @Override

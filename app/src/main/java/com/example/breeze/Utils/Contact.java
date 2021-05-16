@@ -1,4 +1,4 @@
-package com.example.breeze;
+package com.example.breeze.Utils;
 
 public class Contact {
     private String name;

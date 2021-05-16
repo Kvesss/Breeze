@@ -1,4 +1,4 @@
-package com.example.breeze;
+package com.example.breeze.Adapters;
 
 import android.content.Context;
 
@@ -7,6 +7,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.example.breeze.MainFragments.ChatsFragment;
+import com.example.breeze.MainFragments.ContactFragment;
+import com.example.breeze.MainFragments.GroupFragment;
+import com.example.breeze.R;
 
 public class SlidePagerAdapter extends FragmentStatePagerAdapter {
 
