@@ -33,12 +33,25 @@
 
     <Button
         android:id="@+id/btnStartChat"
+        android:layout_below="@+id/tvProfileName"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_margin="100dp"
+        android:layout_marginVertical="20dp"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
         android:text="Send Friend Request"
         android:textAllCaps="false"
+        android:backgroundTint="@color/Green"
+        />
+
+    <Button
+        android:layout_below="@+id/btnStartChat"
+        android:id="@+id/btnDecline"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Refuse friend request"
+        android:textAllCaps="false"
+        android:visibility="invisible"
         />
 </RelativeLayout>

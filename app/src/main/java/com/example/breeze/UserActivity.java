@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,9 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 import com.squareup.picasso.Picasso;
-
-import java.io.BufferedReader;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -32,8 +30,10 @@ public class UserActivity extends AppCompatActivity {
     private TextView username;
     private CircleImageView profileImage;
     private Button btnStartChat;
+    private Button btnDecline;
     private DatabaseReference databaseReference;
     private DatabaseReference friendRequestsReference;
+    private DatabaseReference friendListReference;
     private FirebaseAuth mAuth;
 
 
@@ -43,6 +43,7 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         friendRequestsReference = FirebaseDatabase.getInstance().getReference().child("Friend Requests");
+        friendListReference = FirebaseDatabase.getInstance().getReference().child("Friends");
         mAuth = FirebaseAuth.getInstance();
         userID = getIntent().getExtras().get("clickedUserID").toString();
         loggedUserID = mAuth.getCurrentUser().getUid();
@@ -56,6 +57,7 @@ public class UserActivity extends AppCompatActivity {
         username = findViewById(R.id.tvProfileName);
         profileImage = findViewById(R.id.profile_image);
         btnStartChat = findViewById(R.id.btnStartChat);
+        btnDecline = findViewById(R.id.btnDecline);
     }
 
     public void setUserInfo(){
@@ -81,8 +83,36 @@ public class UserActivity extends AppCompatActivity {
                                     condition = "request sent";
                                     btnStartChat.setText("Cancel Friend Request");
                                 }
+                                else if(requestType.equals("received")){
+                                    condition = "request received";
+                                    btnStartChat.setText("Accept Friend Request");
+                                    btnDecline.setVisibility(View.VISIBLE);
+                                    btnDecline.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            cancelFriendRequest();
+                                        }
+                                    });
+                                }
 
                             }
+                            else {
+                                friendListReference.child(loggedUserID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if(snapshot.hasChild(userID)){
+                                            condition="Friends";
+                                            btnStartChat.setText("Kick friend");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+
                         }
 
                         @Override
@@ -99,12 +129,16 @@ public class UserActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 if(condition.equals("notFriend")){
-
                                     SendFriendRequest();
                                 }
-
                                 if (condition.equals("request sent")){
                                     cancelFriendRequest();
+                                }
+                                if (condition.equals("request received")){
+                                    acceptFriendRequests();
+                                }
+                                if (condition.equals("Friends")){
+                                    kickFriend();
                                 }
                             }
                         });
@@ -118,6 +152,61 @@ public class UserActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void kickFriend() {
+        friendListReference.child(loggedUserID).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                friendListReference.child(userID).child(loggedUserID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            condition="notFriend";
+                            btnStartChat.setText("Send friend request");
+                            Toast.makeText(UserActivity.this, "Successfuly deleted a friend", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+
+    private void acceptFriendRequests() {
+
+        friendListReference.child(loggedUserID).child(userID).child("Friends").setValue("Saved").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    friendListReference.child(userID).child(loggedUserID).child("Friends").setValue("Saved").addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                friendRequestsReference.child(loggedUserID).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        friendRequestsReference.child(userID).child(loggedUserID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                condition = "Friends";
+                                                btnStartChat.setEnabled(true);
+                                                btnStartChat.setText("Kick friend");
+                                                btnDecline.setEnabled(false);
+                                                btnDecline.setVisibility(View.INVISIBLE);
+                                                Toast.makeText(UserActivity.this, "You are now friends!", Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
     private void cancelFriendRequest() {
@@ -135,6 +224,9 @@ public class UserActivity extends AppCompatActivity {
                                                 condition = "notFriend";
                                                 btnStartChat.setText("Send Friend Request");
                                                 Toast.makeText(UserActivity.this, "Request Canceled", Toast.LENGTH_SHORT).show();
+                                                btnDecline.setEnabled(false);
+                                                btnDecline.setVisibility(View.INVISIBLE);
+
 
                                             }
                                         }
