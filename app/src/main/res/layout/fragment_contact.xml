@@ -8,22 +8,20 @@
     android:clickable="true"
     android:focusable="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="contacts" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friendsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background"/>
 
     <Button
         android:id="@+id/btnAddContact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="50dp"
-        android:text="+"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:background="@drawable/button_plus"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="30dp"
+        android:background="@drawable/ic_baseline_add_circle_outline_24"
         />
 
 </RelativeLayout>

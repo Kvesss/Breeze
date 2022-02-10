@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -13,7 +14,6 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/profile_picture"
-            android:background="@drawable/image_border_color_online"
 
             />
 
@@ -32,6 +32,21 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"/>
 
+            <Button
+                android:id="@+id/btnAccept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="@color/YellowGreen"
+                android:text="ACCEPT"/>
+
+            <Button
+                android:id="@+id/btnDecline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="@color/Red"
+                android:text="DECLINE"/>
         </LinearLayout>
 
     </LinearLayout>

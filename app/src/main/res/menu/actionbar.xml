@@ -9,6 +9,12 @@
     </item>
 
     <item
+        android:id="@+id/itemRequests"
+        android:title="@string/friend_requests">
+
+    </item>
+
+    <item
         android:id="@+id/itemSettings"
         android:title="@string/settings">
 

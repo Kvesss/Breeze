@@ -2,6 +2,7 @@ package com.example.breeze;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -51,12 +52,14 @@ public class MainActivity extends AppCompatActivity {
         setupFragments();
         displayRegistrationAlerter();
 
+
     }
 
     public void initializeViews(){
         this.tabLayout = findViewById(R.id.tabLayout);
         this.viewPager = findViewById(R.id.viewPager);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeActionContentDescription("Open action bar");
 
     }
 
@@ -130,6 +133,10 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.itemProfile){
             sendToProfileActivity();
         }
+        if(item.getItemId() == R.id.itemRequests){
+            sendToRequestsActivity();
+        }
+
         if(item.getItemId() == R.id.itemSettings){
             sendToSettingsActivity();
         }
@@ -140,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
             sendToLoginActivity();
             Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
         }
+
 
         return true;
     }
@@ -163,4 +171,8 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    private void sendToRequestsActivity() {
+        Intent intent = new Intent(MainActivity.this, RequestsActivity.class);
+        startActivity(intent);
+    }
 }

@@ -33,6 +33,7 @@
     <string name="send_verification_code">Send Verification Code</string>
     <string name="verify">Verify</string>
     <string name="verification_code">Verification Code</string>
+    <string name="friend_requests">Friend Requests</string>
 
     <string-array name="languages">
         <item>English</item>

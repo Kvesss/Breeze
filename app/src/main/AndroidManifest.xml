@@ -13,15 +13,24 @@
         android:roundIcon="@drawable/breezelogo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Breeze">
-        <activity android:name=".UserActivity"></activity>
+        <activity android:name=".RequestsActivity" />
+        <activity android:name=".UserActivity" />
         <activity android:name=".SearchUsersActivity" />
         <activity android:name=".PhoneLoginActivity" />
         <activity android:name=".GroupChatActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

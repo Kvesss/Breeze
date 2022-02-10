@@ -3,6 +3,7 @@ package com.example.breeze;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,7 +39,6 @@ import java.util.Set;
 
 public class GroupChatActivity extends AppCompatActivity {
 
-
     private ImageButton sendButton;
     private EditText etMessage;
     private ScrollView scrollView;
@@ -60,6 +60,7 @@ public class GroupChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
         this.mAuth = FirebaseAuth.getInstance();
@@ -70,6 +71,7 @@ public class GroupChatActivity extends AppCompatActivity {
         this.sendButton = findViewById(R.id.ibtnSendMessage);
         this.groupName = getIntent().getExtras().getString("groupname");
         this.setTitle(groupName);
+
 
         recyclerView = findViewById(R.id.groupMessagesRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
